@@ -1,4 +1,4 @@
-# Java/Android client for Mango (getmango.com)
+# Java client for Mango (getmango.com)
 
 ### Getting Started
 
@@ -51,6 +51,31 @@ final Charge charge = client.charges.createCharge(chargeInformation);
 logger.info("Successfully charged: {}", charge);
 
 ```
+
+# Android client for Mango (getmango.com)
+
+### Getting Started
+
+```java
+// NOTE: you need to add your api key found on Mango's website here: https://panel.getmango.com
+final String apiKey = "YOUR_API_KEY";
+
+/**
+ * Create client
+ */
+final MangoClient client = new MangoClient(apiKey);
+
+/**
+ * Get a credit card token to make a charge.
+ */
+final CardInformation information = new CardInformation("4507990000000010", 12, 2017, "Test Visa", Card.CardType.VISA, 123);
+logger.info("Creating token based with valid fake credit card information: {}", information);
+final Token token = client.tokens.createToken(information);
+logger.info("Successfully created token: {}", token);
+
+```
+
+Now the token needs to be sent to a server to handle.
 
 ### Integration tests
 
