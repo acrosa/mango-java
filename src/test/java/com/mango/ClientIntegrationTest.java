@@ -15,6 +15,24 @@ import org.slf4j.LoggerFactory;
 public class ClientIntegrationTest
 {
     private static final Logger logger = LoggerFactory.getLogger(ClientIntegrationTest.class);
+    /**
+     * NOTE: you need to add your api key and secret found on Mango's website here: https://panel.getmango.com
+     */
+    final String apiKey = null;
+    final String apiSecret = null;
+
+    private Token getToken(MangoClient client)
+    {
+        /**
+         * Get a credit card token to make a charge.
+         */
+        final String valid_card_with_funds = "4507990000000010";
+        final CardInformation information = new CardInformation(valid_card_with_funds, 12, 2017, "Test Visa", Card.CardType.VISA, 123);
+        logger.info("Creating token based with valid fake credit card information: {}", information);
+        final Token token = client.tokens.createToken(information);
+        logger.info("Successfully created token: {}", token);
+        return token;
+    }
 
     /**
      * Tests a bunch of api endpoints, typically representing a transaction and charge.
@@ -24,11 +42,6 @@ public class ClientIntegrationTest
     @Test
     public void testAgainstSandboxAPI() throws Exception
     {
-        /**
-         * NOTE: you need to add your api key and secret found on Mango's website here: https://panel.getmango.com
-         */
-        final String apiKey = null;
-        final String apiSecret = null;
 
         final String error = "NOTE: you need to add your api key and secret found on Mango's website here: https://panel.getmango.com";
         Preconditions.checkNotNull(apiKey, error);
@@ -40,16 +53,7 @@ public class ClientIntegrationTest
          * Create client
          */
         final MangoClient client = new MangoClient(apiKey, apiSecret);
-
-        /**
-         * Get a credit card token to make a charge.
-         */
-        final String valid_card_with_funds = "4507990000000010";
-        final CardInformation information = new CardInformation(valid_card_with_funds, 12, 2017, "Test Visa", Card.CardType.VISA, 123);
-        logger.info("Creating token based with valid fake credit card information: {}", information);
-        final Token token = client.tokens.createToken(information);
-        logger.info("Successfully created token: {}", token);
-
+        final Token token = getToken(client);
         /**
          * Create a customer with a credit card token associated (default card)
          */
@@ -88,6 +92,41 @@ public class ClientIntegrationTest
         final Refund refund = client.refunds.createRefund(refundInformation);
         logger.info("Successfully refunded last charge: {} refund: {}", charge, refund);
 
+        logger.info("All done. Happy charging.");
+    }
+
+    /**
+     * Tests a bunch of api endpoints, typically representing a transaction and charge.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testAgainstSandboxAPIWithNoAPISecret() throws Exception
+    {
+
+        final String error = "NOTE: you need to add your api key and secret found on Mango's website here: https://panel.getmango.com";
+        Preconditions.checkNotNull(apiKey, error);
+
+        logger.info("Running integration tests against the mango API with no API Secret.");
+
+        /**
+         * Create client
+         */
+        final MangoClient client = new MangoClient(apiKey);
+        getToken(client);
+
+        if (client.cards != null) {
+            throw new Exception("Expected cards to be null when no API secret is provided");
+        }
+        if (client.customers != null) {
+            throw new Exception("Expected customers to be null when no API secret is provided");
+        }
+        if (client.charges != null) {
+            throw new Exception("Expected charges to be null when no API secret is provided");
+        }
+        if (client.refunds != null) {
+            throw new Exception("Expected refunds to be null when no API secret is provided");
+        }
         logger.info("All done. Happy charging.");
     }
 }

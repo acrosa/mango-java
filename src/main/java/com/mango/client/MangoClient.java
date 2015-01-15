@@ -42,21 +42,36 @@ public final class MangoClient
      * @param apiPublicKey public API Key
      * @param apiSecret secret API key
      */
+    public MangoClient(String apiPublicKey)
+    {
+        this.tokens = createTokens(apiPublicKey);
+        this.cards = null;
+        this.customers = null;
+        this.charges = null;
+        this.refunds = null;
+    }
+
     public MangoClient(String apiPublicKey, String apiSecret)
     {
-        Preconditions.checkNotNull(apiPublicKey, "API Key can't be null");
         Preconditions.checkNotNull(apiSecret, "API Secret can't be null");
 
-        final RestAdapter restPublicAdapter = defaultAdapter(apiPublicKey);
-        final RestAdapter restPrivateAdapter = defaultAdapter(apiSecret);
+        this.tokens = createTokens(apiPublicKey);
 
-        this.tokens = restPublicAdapter.create(Tokens.class);
+        final RestAdapter restPrivateAdapter = defaultAdapter(apiSecret);
         this.cards = restPrivateAdapter.create(Cards.class);
         this.customers = restPrivateAdapter.create(Customers.class);
         this.charges = restPrivateAdapter.create(Charges.class);
         this.refunds = restPrivateAdapter.create(Refunds.class);
     }
 
+    private Tokens createTokens(String apiPublicKey)
+    {
+        Preconditions.checkNotNull(apiPublicKey, "API Key can't be null");
+
+        final RestAdapter restPublicAdapter = defaultAdapter(apiPublicKey);
+
+        return restPublicAdapter.create(Tokens.class);
+    }
     private static RestAdapter defaultAdapter(String key)
     {
         return new RestAdapter.Builder()
