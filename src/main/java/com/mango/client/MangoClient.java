@@ -40,7 +40,6 @@ public final class MangoClient
      * Creates a new simple mango client.
      *
      * @param apiPublicKey public API Key
-     * @param apiSecret secret API key
      */
     public MangoClient(String apiPublicKey)
     {
