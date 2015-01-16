@@ -1,5 +1,7 @@
 # Java client for Mango (getmango.com)
 
+[![Build Status](https://travis-ci.org/acrosa/mango-java2.svg?branch=master)](https://travis-ci.org/acrosa/mango-java2)
+
 ### Getting Started
 
 ```java
