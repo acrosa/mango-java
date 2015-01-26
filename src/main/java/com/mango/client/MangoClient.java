@@ -35,6 +35,8 @@ public final class MangoClient
     public final Customers customers;
     public final Charges charges;
     public final Refunds refunds;
+    public final CCVS ccvs;
+    public final Installments installments;
 
     /**
      * Creates a new simple mango client.
@@ -44,10 +46,12 @@ public final class MangoClient
     public MangoClient(String apiPublicKey)
     {
         this.tokens = createTokens(apiPublicKey);
+        this.ccvs = createCCVS(apiPublicKey);
         this.cards = null;
         this.customers = null;
         this.charges = null;
         this.refunds = null;
+        this.installments = null;
     }
 
     public MangoClient(String apiPublicKey, String apiSecret)
@@ -55,22 +59,29 @@ public final class MangoClient
         Preconditions.checkNotNull(apiSecret, "API Secret can't be null");
 
         this.tokens = createTokens(apiPublicKey);
-
+        this.ccvs = createCCVS(apiPublicKey);
         final RestAdapter restPrivateAdapter = defaultAdapter(apiSecret);
         this.cards = restPrivateAdapter.create(Cards.class);
         this.customers = restPrivateAdapter.create(Customers.class);
         this.charges = restPrivateAdapter.create(Charges.class);
         this.refunds = restPrivateAdapter.create(Refunds.class);
+        this.installments = restPrivateAdapter.create(Installments.class);
     }
 
     private Tokens createTokens(String apiPublicKey)
     {
         Preconditions.checkNotNull(apiPublicKey, "API Key can't be null");
-
         final RestAdapter restPublicAdapter = defaultAdapter(apiPublicKey);
-
         return restPublicAdapter.create(Tokens.class);
     }
+
+    private CCVS createCCVS(String apiPublicKey)
+    {
+        Preconditions.checkNotNull(apiPublicKey, "API Key can't be null");
+        final RestAdapter restPublicAdapter = defaultAdapter(apiPublicKey);
+        return restPublicAdapter.create(CCVS.class);
+    }
+
     private static RestAdapter defaultAdapter(String key)
     {
         return new RestAdapter.Builder()

@@ -92,6 +92,13 @@ public class ClientIntegrationTest
         final Refund refund = client.refunds.createRefund(refundInformation);
         logger.info("Successfully refunded last charge: {} refund: {}", charge, refund);
 
+        /**
+         * Return last installments
+         */
+        logger.info("Returning last intallments");
+        final List<Installment> installments = client.installments.getInstallments(2000, Card.CardType.VISA);
+        logger.info("Successfully returned list of last installments: {}", installments);
+
         logger.info("All done. Happy charging.");
     }
 
