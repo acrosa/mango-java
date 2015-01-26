@@ -99,6 +99,13 @@ public class ClientIntegrationTest
         final List<Installment> installments = client.installments.getInstallments(2000, Card.CardType.VISA);
         logger.info("Successfully returned list of last installments: {}", installments);
 
+        /**
+         * Return the list of all elements in the payment queue
+         */
+        logger.info("Returning last elements from the payment queue");
+        final List<QueueElement> queueElements = client.queue.getQueueElements();
+        logger.info("Successfully returned list of last queue elements: {}", queueElements);
+
         logger.info("All done. Happy charging.");
     }
 

@@ -13,6 +13,6 @@ public interface Installments
      *
      * @return a list of @{link Installment}
      */
-    @GET("/cards/")
+    @GET("/installments/")
     public List<Installment> getInstallments(@Query("amount") Integer amount, @Query("cardtype") String cardtype);
 }

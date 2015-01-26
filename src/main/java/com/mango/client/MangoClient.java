@@ -37,6 +37,7 @@ public final class MangoClient
     public final Refunds refunds;
     public final CCVS ccvs;
     public final Installments installments;
+    public final Queue queue;
 
     /**
      * Creates a new simple mango client.
@@ -52,6 +53,7 @@ public final class MangoClient
         this.charges = null;
         this.refunds = null;
         this.installments = null;
+        this.queue = null;
     }
 
     public MangoClient(String apiPublicKey, String apiSecret)
@@ -66,6 +68,7 @@ public final class MangoClient
         this.charges = restPrivateAdapter.create(Charges.class);
         this.refunds = restPrivateAdapter.create(Refunds.class);
         this.installments = restPrivateAdapter.create(Installments.class);
+        this.queue = restPrivateAdapter.create(Queue.class);
     }
 
     private Tokens createTokens(String apiPublicKey)
