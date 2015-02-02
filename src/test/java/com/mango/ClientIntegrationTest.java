@@ -18,8 +18,8 @@ public class ClientIntegrationTest
     /**
      * NOTE: you need to add your api key and secret found on Mango's website here: https://panel.getmango.com
      */
-    final String apiKey = null;
-    final String apiSecret = null;
+    final String apiKey = System.getenv("MANGO_PUBLIC_TEST_KEY");
+    final String apiSecret = System.getenv("MANGO_SECRET_TEST_KEY");
 
     private Token getToken(MangoClient client)
     {
